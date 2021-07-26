@@ -5,21 +5,10 @@ import '../models/product_model.dart';
 import '../screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
-  // final String id;
-  // final String title;
-  // final double price;
-  // final String imageUrl;
-
-  ProductItem(
-      // this.id,
-      // this.title,
-      // this.price,
-      // this.imageUrl,
-      );
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Products>(context);
+    final product = Provider.of<Products>(context,listen: false);
     final cart = Provider.of<CartProviders>(context);
     return GestureDetector(
       onTap: () {
@@ -46,6 +35,16 @@ class ProductItem extends StatelessWidget {
                 onPressed: () {
                   cart.addInCart(product.id, product.title, product.price,
                       product.imageUrl);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content:
+                        Text('Ajouter au panier!', textAlign: TextAlign.center),
+                    action: SnackBarAction(
+                      label: 'Annuler',
+                      onPressed: () {
+                        cart.undoItem(product.id);
+                      },
+                    ),
+                  ));
                 },
               )),
         ),

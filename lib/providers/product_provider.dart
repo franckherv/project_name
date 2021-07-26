@@ -39,11 +39,35 @@ class ProductProviders with ChangeNotifier {
     ),
   ];
 
+  void addProduct(Products product) {
+    var _addTheproducts = Products(
+        title: product.title,
+        price: product.price,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        id: DateTime.now().toString());
+    _items.add(_addTheproducts);
+    notifyListeners();
+  }
+
+  void updateProduct(String id, Products newProduct) {
+    var prodIndex = _items.indexWhere((element) => element.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+    } else {
+      print('...');
+    }
+    notifyListeners();
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
+  }
+
   List<Products> get getFavoriteItem {
     return _items.where((element) => element.isFavorite).toList();
   }
-
-
 
   List<Products> get items {
     return [..._items];

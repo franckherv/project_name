@@ -36,6 +36,26 @@ class CartProviders with ChangeNotifier {
     notifyListeners();
   }
 
+  void undoItem(String productID) {
+    if (!_cartItems.containsKey(productID)) {
+      return;
+    }
+
+    if (_cartItems[productID]!.quantity > 1) {
+      _cartItems.update(
+          productID,
+          (isPresent) => Cart(
+              id: isPresent.id,
+              title: isPresent.title,
+              price: isPresent.price,
+              image: isPresent.image,
+              quantity: isPresent.quantity - 1));
+    } else {
+      _cartItems.remove(productID);
+    }
+    notifyListeners();
+  }
+
   void addInCart(
     String productId,
     String title,

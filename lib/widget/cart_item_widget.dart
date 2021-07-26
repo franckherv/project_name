@@ -9,7 +9,7 @@ class CartItemWidget extends StatelessWidget {
   final String imageUrl;
   final double prix;
   final int quantity;
- 
+
   const CartItemWidget(this.id, this.productId, this.titre, this.imageUrl,
       this.prix, this.quantity);
   @override
@@ -25,9 +25,30 @@ class CartItemWidget extends StatelessWidget {
           color: Colors.white,
         ),
       ),
+      confirmDismiss: (_) {
+        return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title:  Text("Etes-vous sûre ?"),
+                content: Text("Vous allez supprimer ce choix du panier."),
+                actions: [
+                  TextButton(
+                    child: const Text("NON"),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  TextButton(
+                    child: const Text("OUI"),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ],
+              );
+            });
+      },
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        Provider.of<CartProviders>(context, listen: false).removeItem(productId);
+        Provider.of<CartProviders>(context, listen: false)
+            .removeItem(productId);
       },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
